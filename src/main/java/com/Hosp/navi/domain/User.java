@@ -2,7 +2,9 @@ package com.Hosp.navi.domain;
 
 import com.Hosp.navi.domain.enumType.Position;
 import com.Hosp.navi.domain.enumType.Role;
+import lombok.Data;
 
+@Data
 public class User {
     private Long user_id;
 

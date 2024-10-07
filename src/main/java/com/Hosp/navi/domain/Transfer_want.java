@@ -1,5 +1,8 @@
 package com.Hosp.navi.domain;
 
+import lombok.Data;
+
+@Data
 public class Transfer_want {
     private Long want_id;
 

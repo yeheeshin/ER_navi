@@ -1,9 +1,11 @@
 package com.Hosp.navi.domain;
 
 import com.Hosp.navi.domain.enumType.Transfer_status;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class Patient_transfer {
     private Long transfer_id;
 

@@ -1,9 +1,11 @@
 package com.Hosp.navi.domain;
 
 import com.Hosp.navi.domain.enumType.Notice_type;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class Notice {
     private Long notice_id;
 

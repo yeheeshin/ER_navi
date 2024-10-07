@@ -1,7 +1,10 @@
 package com.Hosp.navi.domain;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class Chat_person {
     private Long chat_person_id;
 

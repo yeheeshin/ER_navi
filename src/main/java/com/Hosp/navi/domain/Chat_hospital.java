@@ -1,5 +1,8 @@
 package com.Hosp.navi.domain;
 
+import lombok.Data;
+
+@Data
 public class Chat_hospital {
     private Long chat_hos_id;
 
