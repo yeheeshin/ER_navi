@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.Hosp.navi.mapper.UserMapper">
+
+<!--    &lt;!&ndash; Select 구문 &ndash;&gt;
+    <select id="selectUserById" parameterType="int" resultType="com.example.User">
+        SELECT * FROM Users WHERE id = #{id}
+    </select>
+
+    &lt;!&ndash; Insert 구문 &ndash;&gt;
+    <insert id="insertUser" parameterType="com.example.User">
+        INSERT INTO User (username, password, email)
+        VALUES (#{username}, #{password}, #{email})
+    </insert>
+
+    &lt;!&ndash; Update 구문 &ndash;&gt;
+    <update id="updateUser" parameterType="com.example.User">
+        UPDATE Users
+        SET username = #{username}, password = #{password}, email = #{email}
+        WHERE id = #{id}
+    </update>
+
+    &lt;!&ndash; Delete 구문 &ndash;&gt;
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM Users WHERE id = #{id}
+    </delete>-->
+
+</mapper>
