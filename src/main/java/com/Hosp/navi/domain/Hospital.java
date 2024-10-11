@@ -6,6 +6,7 @@ import lombok.Data;
 public class Hospital {
     private Long hospital_id;
 
+    // api 에서 제공하는 pk
     private String hospital_uuid;
     private String hos_name;
     private String hos_number;
@@ -20,8 +21,5 @@ public class Hospital {
     private double latitude;
     // 경도
     private double longitude;
-
-    // api 에서 제공하는 pk
-    private String hos_uuid;
 
 }
