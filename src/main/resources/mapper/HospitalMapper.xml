@@ -4,5 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.Hosp.navi.mapper.HospitalMapper">
+    <sql id="columns">
+        (hospital_uuid, hos_name, hos_number, er_number, zipcode1, zipcode2, address, latitude, longitude)
+    </sql>
+
+    <insert id="saveFirst" parameterType="com.Hosp.navi.domain.Hospital">
+        insert into Hospital(hospital_uuid, hos_name, hos_number, er_number, latitude, longitude)
+        values (#{hospital_uuid}, #{hos_name}, #{hos_number}, #{er_number}, #{latitude}, #{longitude})
+    </insert>
+
+    <insert id="saveAll" parameterType="com.Hosp.navi.domain.Hospital">
+        insert into Hospital
+        <include refid="columns" />
+        values (#{hospital_uuid}, #{hos_name}, #{hos_number}, #{er_number},
+        #{zipcode1}, #{zipcode2}, #{address}, #{latitude}, #{longitude})
+    </insert>
 
 </mapper>

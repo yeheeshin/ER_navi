@@ -1,5 +1,6 @@
 package com.Hosp.navi.domain;
 
+import com.Hosp.navi.dto.HospitalApi;
 import lombok.Data;
 
 @Data

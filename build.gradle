@@ -26,6 +26,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+	// JAXB API
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1' // 또는 최신 버전으로 수정
+	implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1' // 또는 최신 버전으로 수정
 
 	compileOnly 'org.projectlombok:lombok'
 
