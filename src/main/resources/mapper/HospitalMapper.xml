@@ -20,4 +20,10 @@
         #{zipcode1}, #{zipcode2}, #{address}, #{latitude}, #{longitude})
     </insert>
 
+    <select id="findUUId" resultType="com.Hosp.navi.domain.Hospital">
+        select *
+        from hospital
+        where hospital_uuid = #{hospital_uuid}
+    </select>
+
 </mapper>
