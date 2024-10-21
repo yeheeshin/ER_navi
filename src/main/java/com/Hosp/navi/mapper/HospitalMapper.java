@@ -15,4 +15,5 @@ public interface HospitalMapper {
 
     // pk로 병원 검색
     List<Hospital> findUUId(String hospital_uuid);
+
 }

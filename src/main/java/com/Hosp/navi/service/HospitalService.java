@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 public class HospitalService {
     private final HospitalMapper hospitalMapper;
 
+    // 병원 정보 저장
     public void saveFirst(Hospital hospital) {
         List<Hospital> idList = hospitalMapper.findUUId(hospital.getHospital_uuid());
 

@@ -2,7 +2,6 @@ package com.Hosp.navi.service;
 
 import com.Hosp.navi.domain.Hospital;
 import com.Hosp.navi.dto.HospitalApi;
-import com.Hosp.navi.mapper.HospitalMapper;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -145,6 +144,7 @@ public class ApiDataService {
         Hospital hospital = new Hospital();
         hospital.setHospital_uuid(response.getHpid());
         hospital.setHos_name(response.getDutyName());
+        hospital.setHos_address(response.getDutyAddr());
         hospital.setHos_number(response.getDutyTel1());
         hospital.setEr_number(response.getDutyTel3());
         hospital.setLatitude(response.getWgs84Lat());

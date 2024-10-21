@@ -13,10 +13,7 @@ public class Hospital {
     private String hos_number;
     private String er_number;
 
-    // 주소(우편번호 1, 2, 주소)
-    private String zipcode1;
-    private String zipcode2;
-    private String address;
+    private String hos_address;
 
     // 위도
     private double latitude;

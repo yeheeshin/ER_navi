@@ -5,19 +5,19 @@
 
 <mapper namespace="com.Hosp.navi.mapper.HospitalMapper">
     <sql id="columns">
-        (hospital_uuid, hos_name, hos_number, er_number, zipcode1, zipcode2, address, latitude, longitude)
+        (hospital_uuid, hos_name, hos_number, er_number, hos_address, latitude, longitude)
     </sql>
 
     <insert id="saveFirst" parameterType="com.Hosp.navi.domain.Hospital">
-        insert into Hospital(hospital_uuid, hos_name, hos_number, er_number, latitude, longitude)
-        values (#{hospital_uuid}, #{hos_name}, #{hos_number}, #{er_number}, #{latitude}, #{longitude})
+        insert into Hospital(hospital_uuid, hos_name, hos_number, er_number, latitude, longitude, hos_address)
+        values (#{hospital_uuid}, #{hos_name}, #{hos_number}, #{er_number}, #{latitude}, #{longitude}, #{hos_address})
     </insert>
 
     <insert id="saveAll" parameterType="com.Hosp.navi.domain.Hospital">
         insert into Hospital
         <include refid="columns" />
         values (#{hospital_uuid}, #{hos_name}, #{hos_number}, #{er_number},
-        #{zipcode1}, #{zipcode2}, #{address}, #{latitude}, #{longitude})
+        #{hos_address}, #{latitude}, #{longitude})
     </insert>
 
     <select id="findUUId" resultType="com.Hosp.navi.domain.Hospital">

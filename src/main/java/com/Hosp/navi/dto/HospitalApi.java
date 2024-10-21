@@ -48,6 +48,9 @@ public class HospitalApi {
                 // 병원 이름
                 private String dutyName;
 
+                // 병원 주소
+                private String dutyAddr;
+
                 // 번호
                 private String dutyTel1;
                 private String dutyTel3;

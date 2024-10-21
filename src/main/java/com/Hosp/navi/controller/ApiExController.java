@@ -1,6 +1,7 @@
 package com.Hosp.navi.controller;
 
 import com.Hosp.navi.service.ApiDataService;
+import com.Hosp.navi.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ApiExController {
     private final ApiDataService apiDataService;
+    private final HospitalService hospitalService;
 
     @GetMapping("/getAll")
     public String getData() throws IOException {
