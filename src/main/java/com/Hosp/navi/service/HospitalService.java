@@ -39,4 +39,12 @@ public class HospitalService {
 
     }
 
+    // 병원 uuid 로 검색
+    public Hospital findUUID(String hospital_uuid) {
+        List<Hospital> uuId = hospitalMapper.findUUId(hospital_uuid);
+
+        return uuId.get(0);
+    }
+
+
 }

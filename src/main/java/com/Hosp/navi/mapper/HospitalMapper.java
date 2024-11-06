@@ -13,7 +13,9 @@ public interface HospitalMapper {
     // 첫번째, api로 검색해서 병원 저장
     void saveFirst(Hospital hospital);
 
-    // pk로 병원 검색
+    // uuid 로 병원 검색
     List<Hospital> findUUId(String hospital_uuid);
+
+    Hospital findById(Long hospital_id);
 
 }

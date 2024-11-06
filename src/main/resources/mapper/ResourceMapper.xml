@@ -4,5 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.Hosp.navi.mapper.ResourceMapper">
+    <insert id="save" parameterType="com.Hosp.navi.domain.Resources">
+        insert into Resources(section_type, field_name, available_units, available_status, last_update, hospital)
+        values (#{section_type}, #{field_name}, #{available_units}, #{available_status}, #{last_update}, #{hospital})
+    </insert>
 
 </mapper>

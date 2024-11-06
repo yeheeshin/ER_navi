@@ -26,4 +26,10 @@
         where hospital_uuid = #{hospital_uuid}
     </select>
 
+    <select id="findById" resultType="com.Hosp.navi.domain.Hospital">
+        select *
+        from hospital
+        where hospital_id = #{hospital_id}
+    </select>
+
 </mapper>
