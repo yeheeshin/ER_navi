@@ -1,9 +1,8 @@
-package com.Hosp.navi.service;
+package com.Hosp.navi.service.api;
 
 import com.Hosp.navi.domain.Hospital;
-import com.Hosp.navi.domain.Resources;
 import com.Hosp.navi.dto.HospitalApi;
-import com.Hosp.navi.dto.ResourceApi;
+import com.Hosp.navi.service.HospitalService;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
@@ -19,49 +18,42 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ApiResourceService {
+public class ApiDataService {
 
     private final HospitalService hospitalService;
-    private final ResourceService resourceService;
 
-    @Value("${callBackUrl}/getEmrrmRltmUsefulSckbdInfoInqire")
+    @Value("${callBackUrl}/getEgytListInfoInqire")
     private String apiUrl;
 
     @Value("${serviceKey}")
     private String serviceKey;
 
     // 병원 정보 가져오기&저장
-    public void callApiResource() throws IOException {
-        String STAGE1 = "서울특별시";
+    public void callApiHospital() throws IOException {
+        String Q0 = "서울특별시";
         int numOfRows = 10;  // 첫 번째 요청은 기본값 10으로 설정
         int totalCount = 0;  // totalCount 값을 저장하기 위한 변수
 
         // 첫 번째 API 요청: totalCount 확인을 위한 요청
-        totalCount = requestApiAndGetTotalCount(STAGE1, numOfRows);
+        totalCount = requestApiAndGetTotalCount(Q0, numOfRows);
 
         // 두 번째 요청: totalCount 값을 바탕으로 전체 데이터 가져오기
         if (totalCount > 0) {
             numOfRows = totalCount;  // numOfRows를 totalCount 값으로 설정
-            requestAndSaveHospitals(STAGE1, numOfRows);  // 데이터를 저장하는 메서드 호출
+            requestAndSaveHospitals(Q0, numOfRows);  // 데이터를 저장하는 메서드 호출
         }
     }
 
     // 첫 번째 API 요청을 통해 totalCount를 확인하는 메서드
-    public int requestApiAndGetTotalCount(String STAGE1, int numOfRows) throws IOException {
+    public int requestApiAndGetTotalCount(String Q0, int numOfRows) throws IOException {
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey);
-        urlBuilder.append("&" + URLEncoder.encode("STAGE1", "UTF-8") + "=" + URLEncoder.encode(STAGE1, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("Q0", "UTF-8") + "=" + URLEncoder.encode(Q0, "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + numOfRows);  // 첫 번째 요청 시 numOfRows 추가
 
         URL url = new URL(urlBuilder.toString());
@@ -101,10 +93,10 @@ public class ApiResourceService {
     }
 
     // 두 번째 요청: totalCount에 맞춰 전체 데이터를 가져와 저장
-    public void requestAndSaveHospitals(String STAGE1, int numOfRows) throws IOException {
+    public void requestAndSaveHospitals(String Q0, int numOfRows) throws IOException {
         StringBuilder urlBuilder = new StringBuilder(apiUrl);
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey);
-        urlBuilder.append("&" + URLEncoder.encode("STAGE1", "UTF-8") + "=" + URLEncoder.encode(STAGE1, "UTF-8"));
+        urlBuilder.append("&" + URLEncoder.encode("Q0", "UTF-8") + "=" + URLEncoder.encode(Q0, "UTF-8"));
         urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + numOfRows);  // totalCount에 맞춰 numOfRows 설정
 
         URL url = new URL(urlBuilder.toString());
@@ -130,71 +122,34 @@ public class ApiResourceService {
 
         String xml = sb.toString();
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(ResourceApi.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(HospitalApi.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            ResourceApi apiResponse = (ResourceApi) unmarshaller.unmarshal(new StringReader(xml));
+            HospitalApi apiResponse = (HospitalApi) unmarshaller.unmarshal(new StringReader(xml));
 
             if (apiResponse.getBody() != null && apiResponse.getBody().getItems() != null) {
-                List<ResourceApi.Body.Items.Item> itemList = apiResponse.getBody().getItems().getItem();
-                List<Resources> resources = new ArrayList<>();
+                List<HospitalApi.Body.Items.Item> itemList = apiResponse.getBody().getItems().getItem();
+                List<Hospital> hospitals = itemList.stream()
+                        .map(this::convertToHospital)
+                        .collect(Collectors.toList());
 
-                for (ResourceApi.Body.Items.Item item : itemList) {
-                    List<Resources> itemResources = convertToResource(item);
-                    resources.addAll(itemResources);
-
+                for (Hospital hospital : hospitals) {
+                    hospitalService.saveFirst(hospital);  // 병원 정보 저장
                 }
-
-                for (Resources resource : resources) {
-                    resourceService.saveResource(resource);
-                }
-
             }
         } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
 
-    // 받아온 결과 table 에 저장
-    public List<Resources> convertToResource(ResourceApi.Body.Items.Item item) {
-        Map<String, String[]> fieldTotypeMap = ApiFieldMappings.getFieldToTypeMap();
-        Map<String, Function<ResourceApi.Body.Items.Item, Object>> fieldGetters = ApiFieldMappings.getFieldGetters();
-
-        return fieldTotypeMap.entrySet().stream()
-                .map(entry -> {
-                    String fieldKey = entry.getKey();
-                    String[] types = entry.getValue();
-                    Object value = fieldGetters.get(fieldKey).apply(item); // 가용 수
-
-                    Hospital uuid = hospitalService.findUUID(item.getHpid());
-
-                    Resources resource = new Resources();
-                    resource.setField_name(fieldKey);
-                    resource.setSection_type(types[0]);
-                    resource.setLast_update(LocalDateTime.now());
-                    resource.setHospital(uuid.getHospital_id());
-
-                    System.out.println("fieldKey = " + fieldKey);
-
-                    if(!fieldKey.contains("HVS")){
-                        if (value instanceof Integer) {
-                            Integer intValue = (Integer) value;
-
-                            resource.setAvailable_units(intValue);
-                            resource.setAvailable_status("Y");
-                        } else if (value instanceof String) {
-                            String strValue = (String) value;
-
-                            resource.setAvailable_status(strValue);
-                            resource.setAvailable_units(1);
-                        }
-                    }
-
-                    return resource;
-
-                })
-                .collect(Collectors.toList());
+    public Hospital convertToHospital(HospitalApi.Body.Items.Item response) {
+        Hospital hospital = new Hospital();
+        hospital.setHospital_uuid(response.getHpid());
+        hospital.setHos_name(response.getDutyName());
+        hospital.setHos_address(response.getDutyAddr());
+        hospital.setHos_number(response.getDutyTel1());
+        hospital.setEr_number(response.getDutyTel3());
+        hospital.setLatitude(response.getWgs84Lat());
+        hospital.setLongitude(response.getWgs84Lon());
+        return hospital;
     }
-
-
-
 }

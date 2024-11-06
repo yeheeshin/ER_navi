@@ -1,4 +1,4 @@
-package com.Hosp.navi.service;
+package com.Hosp.navi.service.api;
 
 import com.Hosp.navi.dto.ResourceApi;
 

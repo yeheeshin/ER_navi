@@ -1,7 +1,7 @@
 package com.Hosp.navi.controller;
 
-import com.Hosp.navi.service.ApiDataService;
-import com.Hosp.navi.service.ApiResourceService;
+import com.Hosp.navi.service.api.ApiDataService;
+import com.Hosp.navi.service.api.ApiResourceService;
 import com.Hosp.navi.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
