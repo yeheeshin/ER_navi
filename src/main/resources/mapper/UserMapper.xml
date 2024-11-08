@@ -28,4 +28,12 @@
         DELETE FROM Users WHERE id = #{id}
     </delete>-->
 
+    <insert id="saveUser" parameterType="com.Hosp.navi.domain.User">
+        INSERT INTO User (username, password, email, phone, role, position)
+        VALUES (#{username}, #{password}, #{email}, #{phone}, #{role}, #{position})
+    </insert>
+
+    <select id="findByEmail" parameterType="String" resultType="com.example.User">
+        SELECT * FROM User WHERE email = #{email}
+    </select>
 </mapper>
